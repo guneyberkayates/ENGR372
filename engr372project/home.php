@@ -1,20 +1,28 @@
-<!-- PROJENİN EN ÖNEMLİ İŞLERİNİN YAPILDIĞI YÖNETİM SAYFASIDIR. -->
 <?php
+// Include the configuration file
 include("pdoconfig.php");
+
+// Start the session
 session_start();
 
-// Kullanıcının oturum açtığından emin olun
+// Redirect to the login page if the user is not logged in
 if (!isset($_SESSION['id'])) {
-  // Kullanıcı oturum açmadıysa, yönlendirme yapın veya hata mesajı gösterin
-  header('Location: login.php');
-  exit;
+    header('Location: login.php');
+    exit;
 }
 
-// Oturum açmış olan kullanıcının kimliğini alın
-$id = $_SESSION['id'];
+// Get user information from the session
+$user_id = $_SESSION['id'];
 $user_name = $_SESSION['username'];
 
+// Count the number of links for the user
+$countQuery = "SELECT COUNT(*) FROM links WHERE user_id = :user_id";
+$countStmt = $con->prepare($countQuery);
+$countStmt->bindParam(':user_id', $user_id);
+$countStmt->execute();
+$linkCount = $countStmt->fetchColumn();
 
+// HTML rendering starts here
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,51 +74,35 @@ $user_name = $_SESSION['username'];
       <br>
       <br>
       <?php
+// Process form submission to add a new link
+if ($_POST) {
+  include 'pdoconfig.php';
 
-      if($_POST){
-	 // veritabanı yapılandırma dosyasını dahil et
-	 include 'pdoconfig.php';
-   // Eklenen link sayısını kontrol etmek için bir sorgu hazırla
-   $countQuery = "SELECT COUNT(*) FROM links WHERE id = :id";
-   $countStmt = $con->prepare($countQuery);
-   $countStmt->bindParam(':id', $id);
-   $countStmt->execute();
-   $linkCount = $countStmt->fetchColumn();
+  // Check if the user has reached the link limit
+  
+      try {
+          $sorgu2 = "INSERT INTO links (title, url, user_id) VALUES (:title, :url, :user_id)";
+          $stmt2 = $con->prepare($sorgu2);
 
-   // Link sayısı 20'yi geçiyorsa işlemi iptal et
-   if ($linkCount > 20) {
-       echo "<div class='alert alert-danger'>Link ekleme limitine ulaşıldı.</div>";
-   } else {
-    try{
-      // kayıt ekleme sorgusu
-      $sorgu2 = "INSERT INTO links SET title=:title, url=:url,	id==2";
-      
-      // sorguyu hazırla
-      $stmt2 = $con->prepare($sorgu2);
-      
-      // post edilen değerler
-      $title=htmlspecialchars(strip_tags($_POST['title']));
-      $url=htmlspecialchars(strip_tags($_POST['url']));
-      
-      // parametreleri bağla
-      $stmt2->bindParam(':title', $title);
-      $stmt2->bindParam(':url', $url);
-      $stmt2->bindParam(':id', $id);
-      
-      // sorguyu çalıştır
-      if($stmt2->execute()){
-        echo "<div class='alert alert-success'>Link kaydedildi.</div>";
-      }else{
-        echo "<div class='alert alert-danger'>Link kaydedilemedi.</div>";
+          $title = htmlspecialchars(strip_tags($_POST['title']));
+          $url = htmlspecialchars(strip_tags($_POST['url']));
+
+          $stmt2->bindParam(':title', $title);
+          $stmt2->bindParam(':url', $url);
+          $stmt2->bindParam(':user_id', $user_id);
+
+          if ($stmt2->execute()) {
+              echo "<div class='alert alert-success'>Link kaydedildi.</div>";
+          } else {
+              echo "<div class='alert alert-danger'>Link kaydedilemedi.</div>";
+          }
+      } catch (PDOException $exception) {
+          die('ERROR: ' . $exception->getMessage());
       }
-      }
-      // hatayı göster
-    catch(PDOException $exception){
-    die('ERROR: ' . $exception->getMessage());
-    }
-    }
-  }
-	?>  
+  
+}
+?>
+   
 
 
 		  
@@ -140,12 +132,13 @@ $user_name = $_SESSION['username'];
       <br>
       <form id="linkForm2" style="display: none;">
       <?php
-        $sorgu1 = ("SELECT id, title, url, id FROM links WHERE id = ".$id." ");
+        $sorgu1 = "SELECT id, title, url FROM links WHERE user_id = :user_id";
         $stmt1 = $con->prepare($sorgu1);
-        $stmt1 ->execute();
-        $sayi1 = $stmt1->rowCount();
+        $stmt1->bindParam(':user_id', $user_id);
+        $stmt1->execute();
+        
 
-        if($sayi1>0){
+        if($linkCount>0){
 
         echo "<table class='table table-hover table-responsive table-bordered'>";
         //tablo başlangıcı
@@ -198,12 +191,11 @@ $user_name = $_SESSION['username'];
         <b><p> @<?php echo $userfw?> </p></b>
         <?php
         //SORGU BAŞLANGICI LİNK LİSTELEME
-        $sorgu1 = ("SELECT id, title, url, id FROM links WHERE id = ".$id." ");
+        $sorgu1 = "SELECT id, title, url FROM links WHERE user_id = :user_id";
         $stmt1 = $con->prepare($sorgu1);
-        $stmt1 ->execute();
-        $sayi1 = $stmt1->rowCount();
+        $stmt1->bindParam(':user_id', $id);
+        if ($stmt1->execute() && $linkCount > 0) {
 
-        if($sayi1>0){
 
         echo "<table class='table table-hover table-responsive table-bordered'>";
         //tablo başlangıcı

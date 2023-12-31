@@ -24,7 +24,7 @@ $user_name = $_SESSION['username'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATKTREE - Home</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
@@ -33,58 +33,49 @@ $user_name = $_SESSION['username'];
 <body>
 
 <?php
-  $userfw = $user_name;
-  $buyuk = strtoupper($userfw);
-  $sonuc = substr($buyuk, 0, 1);
+// Generate the user's first initial for display
+$userInitial = strtoupper(substr($user_name, 0, 1));
 ?>
 
 <div style="text-align: center;" class="screen">
-        <p class="yuvarlak-buton2"><?php echo $sonuc ?></p>
-        <b><p> @<?php echo $userfw?> </p></b>
-        <a href="#" class="addbutton" style="border-radius: 20px;" onclick="changeBackgroundColor()">CHANGE THEME ></a>
-        <?php
-        $sorgu1 = ("SELECT id, title, url, user_id FROM links WHERE user_id = ".$user_id." ");
-        $stmt1 = $con->prepare($sorgu1);
-        $stmt1 ->execute();
-        $sayi1 = $stmt1->rowCount();
+    <p class="yuvarlak-buton2"><?php echo $userInitial ?></p>
+    <b><p> @<?php echo $user_name ?> </p></b>
+    <a href="#" class="addbutton" style="border-radius: 20px;" onclick="changeBackgroundColor()">CHANGE THEME ></a>
 
-        if($sayi1>0){
+    <?php
+    // Fetch user's links from the database
+    $linkQuery = "SELECT id, title, url FROM links WHERE user_id = :user_id";
+    $linkStmt = $con->prepare($linkQuery);
+    $linkStmt->bindParam(':user_id', $user_id);
+    $linkStmt->execute();
 
+    $linkCount = $linkStmt->rowCount();
+
+    if ($linkCount > 0) {
         echo "<table class='table table-striped'>";
-        //tablo başlangıcı
-        //tablo başlıkları
         echo "<tr>";
-          echo "<th>TITLE</th>";
-          echo "<th>URL</th>";
-          echo "<th>ACTION</th>";
+        echo "<th>TITLE</th>";
+        echo "<th>URL</th>";
+        echo "<th>ACTION</th>";
         echo "</tr>";
 
-          while ($kayit = $stmt1->fetch(PDO::FETCH_ASSOC)){
-          // tablo alanlarını değişkene dönüştürür
-          // $kayit['urunadi'] => $urunadi
-            extract($kayit);
-
-            // her kayıt için yeni bir tablo satırı oluştur
+        while ($link = $linkStmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($link);
             echo "<tr>";
-              echo "<td>{$title}</td>";
-              echo "<td>{$url}</td>";
-              echo "<td>";
-                // kayıt detay sayfa bağlantısı
-                echo "<a href='$url' target='_blank'><span class='btn btn-dark'>Tıkla</span></a>";
-              echo "</td>";
+            echo "<td>{$title}</td>";
+            echo "<td>{$url}</td>";
+            echo "<td>";
+            echo "<a href='$url' target='_blank'><span class='btn btn-dark'>Tıkla</span></a>";
+            echo "</td>";
             echo "</tr>";
-          }
-
-
-        echo "</table>"; // tablo sonu
-
         }
 
-        else{
+        echo "</table>";
+    } else {
         echo "<div class='alert alert-danger'>Listelenecek link bulunamadı.</div>";
-        }
-
-        ?>
+    }
+    ?>
+</div>
 
       </div>
 

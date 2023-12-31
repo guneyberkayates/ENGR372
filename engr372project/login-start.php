@@ -39,9 +39,8 @@ if (isset($_POST['uname']) && isset($_POST['pword'])) {
 			$row = mysqli_fetch_assoc($result);
             if ($row['username'] === $uname && $row['password'] === $pass) {
             	$_SESSION['username'] = $row['username'];
-            	$_SESSION['name'] = $row['adsoyad'];
             	$_SESSION['id'] = $row['id'];
-				header("Location: home.php");
+				header("Location: customize.php");
  				exit();
      
             }else{
@@ -57,7 +56,7 @@ if (isset($_POST['uname']) && isset($_POST['pword'])) {
 }
 
 else{
-	header("Location: login.php");
+	header("customize.php");
 	exit();
 }
 
