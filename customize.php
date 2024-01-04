@@ -16,12 +16,7 @@ if (!isset($_SESSION['id'])) {
 $user_id = $_SESSION['id'];
 $user_name = $_SESSION['username'];
 
-// Count the number of links for the user
-$countQuery = "SELECT COUNT(*) FROM links WHERE id = :user_id";
-$countStmt = $con->prepare($countQuery);
-$countStmt->bindParam(':user_id', $user_id);
-$countStmt->execute();
-$linkCount = $countStmt->fetchColumn();
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {

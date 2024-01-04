@@ -21,20 +21,21 @@ try {
     $statement->bindParam(':user_id', $user_id, PDO::PARAM_STR);
     $statement->execute();
 
-    // Fetch all records as an associative array
-    $userData = $statement->fetchAll(PDO::FETCH_ASSOC);
+    // Fetch the first record as an associative array
+    $firstRecord = $statement->fetch(PDO::FETCH_ASSOC);
 
-    // Example: Accessing the first record
-    if (!empty($userData)) {
-        $firstRecord = $userData[0];
+    if ($firstRecord) {
         $profilePic = $firstRecord['profile_pic'];
         $Twitter = $firstRecord['Twitter'];
         $Facebook = $firstRecord['Facebook'];
         $Instagram = $firstRecord['Instagram'];
         $Linkedin = $firstRecord['Linkedin'];
         $selectedColor = $firstRecord['selectedColor'];
+    } else {
+        // Handle the case when no user data is found
+        echo 'No user data found';
+        exit;
     }
-
 } catch (PDOException $exception) {
     die('ERROR: ' . $exception->getMessage());
 }
@@ -103,32 +104,37 @@ try {
 <div class="container">
     <h1>Saved User Data</h1>
 
-   
-   <?php
+    <?php
    if (!empty($profilePic)) {
-       $imageType = mime_content_type($profilePic); // Determine the content type dynamically
-       echo '<img src="data:image/jpeg;base64,' . base64_encode($profilePic) . '" alt="User Photo">';
+    // Determine the image type dynamically
+    $imageData = base64_decode($profilePic);
+    $imageInfo = getimagesizefromstring($imageData);
 
-   } else {
-       echo '<p>No profile picture available</p>';
-   }
-  
-  
- 
+    if ($imageInfo !== false) {
+        $imageType = $imageInfo['mime'];
+        echo '<img src="data:' . $imageType . ';base64,' . $profilePic . '" alt="User Photo">';
+    } else {
+        echo '<p>Invalid image data</p>';
+    }
+} else {
+    echo '<p>No profile picture available</p>';
+}
+
     ?>
 
-    <div class="data-div Twitter-div">
-        <p><strong>Twitter:</strong> <span id="Twitter"><?php echo $Twitter; ?></span></p>
-    </div>
-    <div class="data-div Facebook-div">
-        <p><strong>Facebook:</strong> <span id="Facebook"><?php echo $Facebook; ?></span></p>
-    </div>
-    <div class="data-div Instagram-div">
-        <p><strong>Instagram:</strong> <span id="Instagram"><?php echo $Instagram; ?></span></p>
-    </div>
-    <div class="data-div Linkedin-div">
-        <p><strong>Linkedin:</strong> <span id="Linkedin"><?php echo $Linkedin; ?></span></p>
-    </div>
+<div class="data-div Twitter-div">
+    <p><strong>Twitter:</strong> <a href="<?php echo $Twitter; ?>" target="_blank" id="Twitter"><?php echo $Twitter; ?></a></p>
+</div>
+<div class="data-div Facebook-div">
+    <p><strong>Facebook:</strong> <a href="<?php echo $Facebook; ?>" target="_blank" id="Facebook"><?php echo $Facebook; ?></a></p>
+</div>
+<div class="data-div Instagram-div">
+    <p><strong>Instagram:</strong> <a href="<?php echo $Instagram; ?>" target="_blank" id="Instagram"><?php echo $Instagram; ?></a></p>
+</div>
+<div class="data-div Linkedin-div">
+    <p><strong>Linkedin:</strong> <a href="<?php echo $Linkedin; ?>" target="_blank" id="Linkedin"><?php echo $Linkedin; ?></a></p>
+</div>
+
 </div>
 </body>
 </html>

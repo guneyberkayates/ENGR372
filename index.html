@@ -1,30 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="styles.css" rel="stylesheet"/>
-  <title>Link in Bio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link In Bio WebPage</title>
+    <link rel="stylesheet" href="landing.css">
 </head>
-<body>
-  <main>
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy7nFdX1g_CVR4WyP5LgKOGytP0J8PE53_RQ&usqp=CAU" alt="profile" class="profile-image" />
-    <h1 class="profile-name"> Murat Can Önder </h1>
-    <p class="summary">🚀 Software Developer | 🏦 Architecht</p>
-    <section class="about">
-      <span class="about__title">More about me:</span>
-      <ul class="about__list">
-        <li><a href="https://www.linkedin.com/in/onder-muratcan/">Linkedin</a></li>
-        <li><a href="https://www.bilgi.edu.tr/tr/">Blog</a></li>
-      </ul>
-    </section>
-    <ul class="list-links">
-      <li><a href="https://github.com" target="_blank">Github</a></li>
-      <li><a href="https://twitter.com/home" target="_blank">Twitter</a></li>
-      <li><a href="https://www.youtube.com/" target="_blank">Youtube</a></li>
-      <li><a href="https://www.instagram.com/" target="_blank">Instagram</a></li>
-    </ul>
-  </main>
+
+
+<body>  
+    
+<section>
+<div class="circle"></div>
+
+    <header>
+        <a href="#" class="logo"> <img src="images/black_link.png"> </a>
+        <ul>
+            <li style="color: aliceblue;"> <a href="#"> ABOUT US </a> </li>
+            <li> <a href="pricing.html"> PRICING </a> </li>
+            <li> <a href="login.php"> LOGIN </a> </li>
+            <li> <a href="signup.php"> SIGN UP </a> </li>
+        </ul>
+    </header>
+
+<div class="content">
+    <div class="textBox">
+        <h2> It's <br> <span> Link In Bio</span> </h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero aspernatur quia
+          delectus dolorum hic nemo, quasi repellendus  maxime nam omnis non quo nihil
+          odio doloremque, debitis, placeat sed aperiam aut.</p>
+
+          <a href="#"> Learn More</a>
+    </div>
+    <div class="imgBox">
+        <img src="images/link in bio v1.png" class="starbucks">
+
+    </div>
+</div>
+<ul class="thumb" >
+    <li><img src="images/circle-1.png" onclick="imgSlider('images/link in bio v1.png'); changeCircleColor('#072519'); changeHeaderColor('#072519'); changeButtonColor('#072519')"> </li>
+    <li><img src="images/circle-2.png" onclick="imgSlider('images/link in bio v2.png'); changeCircleColor('#42d1f5'); changeHeaderColor('#42d1f5'); changeButtonColor('#42d1f5')">  </li>
+    <li><img src="images/circle-3.png" onclick="imgSlider('images/link in bio v3.png'); changeCircleColor('#d752b1'); changeHeaderColor('#d752b1'); changeButtonColor('#d752b1')"> </li>
+</ul>
+
+<ul class="sci"> 
+    <li> <a href="#"> <img src="images/facebook.png"></a> </li>
+    <li> <a href="#"> <img src="images/twitter.png"></a> </li>
+    <li> <a href="#"> <img src="images/instagram.png"></a> </li>
+
+</ul>
+
+</section>
+
+<script type="text/javascript"> 
+    function imgSlider(anything){
+    document.querySelector('.starbucks').src = anything;
+   }
+
+   function changeCircleColor(color){
+    const circle = document.querySelector('.circle');
+    circle.style.background = color;
+   }
+   function changeHeaderColor(color){
+    const headerTheme = document.querySelector('.content .textBox h2 span');
+    headerTheme.style.color = color;
+   }
+   function changeButtonColor(color){
+    const headerTheme = document.querySelector('.content .textBox a');
+    headerTheme.style.background = color;
+   }
+      </script>
+
 </body>
-</html>
+</html> 
