@@ -1,5 +1,4 @@
 <?php
-
 // Include the configuration file
 include("pdoconfig.php");
 
@@ -16,8 +15,6 @@ if (!isset($_SESSION['id'])) {
 $user_id = $_SESSION['id'];
 $user_name = $_SESSION['username'];
 
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Check if a file was uploaded
@@ -28,27 +25,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $base64Image = null; // No image uploaded
         }
 
-        $sorgu2 = "INSERT INTO user_data (id, Twitter, Facebook, Instagram, Linkedin, profile_pic) 
-                   VALUES (:user_id, :Twitter, :Facebook, :Instagram, :Linkedin, :profilePic)";
+        // Check if GitHub and Reddit fields exist in $_POST
+        $GitHub = isset($_POST['GitHub']) ? $_POST['GitHub'] : '';
+        $Reddit = isset($_POST['Reddit']) ? $_POST['Reddit'] : '';
+
+        // Add GitHub and Reddit fields to the database query
+        $sorgu2 = "INSERT INTO user_data (id, Twitter, Facebook, Instagram, Linkedin, GitHub, Reddit, profile_pic, selectedColor) 
+        VALUES (:user_id, :Twitter, :Facebook, :Instagram, :Linkedin, :GitHub, :Reddit, :profilePic, :selectedColor)";
         $stmt2 = $con->prepare($sorgu2);
 
         $Twitter = $_POST['Twitter'];
         $Facebook = $_POST['Facebook'];
         $Instagram = $_POST['Instagram'];
         $Linkedin = $_POST['Linkedin'];
+        $selectedColor = isset($_POST['selectedColor']) ? $_POST['selectedColor'] : '';
+        $stmt2->bindParam(':selectedColor', $selectedColor, PDO::PARAM_STR);
 
         $stmt2->bindParam(':user_id', $user_id, PDO::PARAM_STR);
         $stmt2->bindParam(':Twitter', $Twitter, PDO::PARAM_STR);
         $stmt2->bindParam(':Facebook', $Facebook, PDO::PARAM_STR);
         $stmt2->bindParam(':Instagram', $Instagram, PDO::PARAM_STR);
         $stmt2->bindParam(':Linkedin', $Linkedin, PDO::PARAM_STR);
+        $stmt2->bindParam(':GitHub', $GitHub, PDO::PARAM_STR);
+        $stmt2->bindParam(':Reddit', $Reddit, PDO::PARAM_STR);
         $stmt2->bindParam(':profilePic', $base64Image, PDO::PARAM_LOB);
 
         if ($stmt2->execute()) {
             echo "<div class='alert alert-success'>Data saved successfully.</div>";
-             // Redirect to data.php
-             header("Location: data.php");
-             exit();
+            // Redirect to data.php
+            header("Location: data.php");
+            exit();
         } else {
             echo "<div class='alert alert-danger'>Failed to save data.</div>";
         }
@@ -57,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -172,6 +179,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       z-index: 1;
     }
+    .GitHub-div {
+      background-color: #e0e0e0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .Reddit-div {
+      background-color: #ff5722;
+      padding: 10px;
+      border-radius: 5px;
+    }
 
     .color-option {
       width: 20px;
@@ -191,7 +209,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <div class="container">
     
     <button id="settingsButton" onclick="toggleColorOptions()">Settings</button>
+    
     <div class="color-options">
+      <input type="hidden" id="selectedColor" name="selectedColor">
       <div class="color-option" style="background-color: blue" onclick="changeBackgroundColor('blue')"></div>
       <div class="color-option" style="background-color: yellow" onclick="changeBackgroundColor('yellow')"></div>
       <div class="color-option" style="background-color: green" onclick="changeBackgroundColor('green')"></div>
@@ -202,19 +222,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <br>
       <div class="circle" id="profileCircle"></div>
       <br>
-      <div class="input-div Twitter-div">
-        <input type="text" id="Twitter" name="Twitter" placeholder="Twitter">
+        
 
-      </div>
-      <div class="input-div Facebook-div">
-        <input type="text" id="Facebook" name="Facebook" placeholder="Facebook">
-      </div>
-      <div class="input-div Instagram-div">
-        <input type="text" id="Instagram" name="Instagram" placeholder="Instagram">
-      </div>
-      <div class="input-div Linkedin-div">
-        <input type="text" id="Linkedin" name="Linkedin" placeholder="Linkedin">
-      </div>
+        <div class="input-div Twitter-div" style="display: flex; flex-direction:row; ">
+        <img src="./images/svg/file6.svg" alt="Twitter Icon" style="width: 1.25em; height: 1.25em;">
+    <input type="text" id="Twitter" name="Twitter" placeholder="Twitter">
+  </div>
+  <div class="input-div Facebook-div" style="display: flex; flex-direction:row;">
+    <img src="./images/svg/file1.svg" alt="Facebook Icon"  style="width: 1.25em; height: 1.25em;">
+    <input type="text" id="Facebook" name="Facebook" placeholder="Facebook">
+  </div>
+  <div class="input-div Instagram-div" style="display: flex; flex-direction:row;">
+    <img src="./images/svg/file3.svg" alt="Instagram Icon"  style="width: 1.25em; height: 1.25em;">
+    <input type="text" id="Instagram" name="Instagram" placeholder="Instagram">
+  </div>
+  <div class="input-div Linkedin-div" style="display: flex; flex-direction:row;">
+    <img src="./images/svg/file4.svg" alt="Linkedin Icon"  style="width: 1.25em; height: 1.25em;">
+    <input type="text" id="Linkedin" name="Linkedin" placeholder="Linkedin">
+  </div>
+  <div class="input-div GitHub-div" style="display: flex; flex-direction:row;">
+    <img src="./images/svg/file2.svg" alt="GitHub Icon"  style="width: 1.25em; height: 1.25em;">
+    <input type="text" id="GitHub" name="GitHub" placeholder="GitHub">
+  </div>
+  <div class="input-div Reddit-div" style="display: flex; flex-direction:row;">
+    <img src="./images/svg/file5.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
+    <input type="text" id="Reddit" name="Reddit" placeholder="Reddit">
+  </div>
+
+
       <button type="submit" >Save</button>
     </form>
   </div>
@@ -228,8 +263,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     function changeBackgroundColor(color) {
-      document.body.style.backgroundColor = color;
-    }
+  document.body.style.backgroundColor = color;
+  document.getElementById('selectedColor').value = color;
+}
+
 
     function validateForm() {
       var profilePic = document.getElementById('profilePic').value;

@@ -25,12 +25,17 @@ try {
     $firstRecord = $statement->fetch(PDO::FETCH_ASSOC);
 
     if ($firstRecord) {
+
+       
+
         $profilePic = $firstRecord['profile_pic'];
         $Twitter = $firstRecord['Twitter'];
         $Facebook = $firstRecord['Facebook'];
         $Instagram = $firstRecord['Instagram'];
         $Linkedin = $firstRecord['Linkedin'];
         $selectedColor = $firstRecord['selectedColor'];
+        $GitHub = $firstRecord['GitHub'];
+        $Reddit = $firstRecord['Reddit'];
     } else {
         // Handle the case when no user data is found
         echo 'No user data found';
@@ -64,6 +69,13 @@ try {
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adding a slight shadow */
+        }
+        .GitHub-div {
+            background-color: #e0e0e0; /* Light grey for GitHub */
+        }
+
+        .Reddit-div {
+            background-color: #ff5722; /* Deep orange for Reddit */
         }
 
         img {
@@ -122,18 +134,39 @@ try {
 
     ?>
 
-<div class="data-div Twitter-div">
+
+
+<div class="data-div Twitter-div"  style="display: flex; flex-direction:row;">
+<img src="./images/svg/file6.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
+
     <p><strong>Twitter:</strong> <a href="<?php echo $Twitter; ?>" target="_blank" id="Twitter"><?php echo $Twitter; ?></a></p>
 </div>
-<div class="data-div Facebook-div">
+<div class="data-div Facebook-div"  style="display: flex; flex-direction:row;">
+<img src="./images/svg/file1.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
+
     <p><strong>Facebook:</strong> <a href="<?php echo $Facebook; ?>" target="_blank" id="Facebook"><?php echo $Facebook; ?></a></p>
 </div>
-<div class="data-div Instagram-div">
+<div class="data-div Instagram-div"  style="display: flex; flex-direction:row;">
+<img src="./images/svg/file3.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
+
     <p><strong>Instagram:</strong> <a href="<?php echo $Instagram; ?>" target="_blank" id="Instagram"><?php echo $Instagram; ?></a></p>
 </div>
-<div class="data-div Linkedin-div">
+<div class="data-div Linkedin-div"  style="display: flex; flex-direction:row;">
+<img src="./images/svg/file4.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
+
     <p><strong>Linkedin:</strong> <a href="<?php echo $Linkedin; ?>" target="_blank" id="Linkedin"><?php echo $Linkedin; ?></a></p>
 </div>
+<div class="data-div GitHub-div"  style="display: flex; flex-direction:row;">
+<img src="./images/svg/file2.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
+
+    <p><strong>GitHub:</strong> <a href="<?php echo $GitHub; ?>" target="_blank" id="GitHub"><?php echo $GitHub; ?></a></p>
+</div>
+<div class="data-div Reddit-div"  style="display: flex; flex-direction:row;">
+<img src="./images/svg/file5.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
+
+    <p><strong>Reddit:</strong> <a href="<?php echo $Reddit; ?>" target="_blank" id="Reddit"><?php echo $Reddit; ?></a></p>
+</div>
+
 
 </div>
 </body>
