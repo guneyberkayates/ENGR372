@@ -1,0 +1,1 @@
+SELECT * FROM engr372.user_data;
