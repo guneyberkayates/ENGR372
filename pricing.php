@@ -32,7 +32,7 @@
                     <div>More link options</div>
                 </div>
                 <div class="button">
-                    <button> Learn More</button>
+                <button onclick="window.location.href='creditCard.html'">Click to Pay</button>
                 </div>
             </div>
 
@@ -48,7 +48,7 @@
                     <div>More link options</div>
                 </div>
                 <div class="button">
-                    <button> Learn More</button>
+                <button onclick="window.location.href='creditCard.html'">Click to Pay</button>
                 </div>
             </div>
 
@@ -64,7 +64,8 @@
                     <div>More link options</div>
                 </div>
                 <div class="button">
-                    <button> Learn More</button>
+                <button onclick="window.location.href='creditCard.html'">Click to Pay</button>
+
                 </div>
             </div>
 
