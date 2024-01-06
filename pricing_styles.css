@@ -14,12 +14,18 @@ body{
 }
 }
 
+.pricing-table{
+   position: absolute;
+   right:100
+}
+
 .pricing-table .details{
     width:90%;
     max-width:500px;
     text-align: center;
     margin:0 auto;
     padding:40px 20px;
+
 
 }
 

@@ -12,6 +12,12 @@ if (!isset($_SESSION['id'])) {
 }
 
 
+if (isset($_POST['exit_button_clicked'])) {
+    session_destroy();
+    header("Location: login.php"); // Redirect to login page after session destruction
+    exit();
+}
+
 // Get user information from the session
 $user_id = $_SESSION['id'];
 $user_name = $_SESSION['username'];

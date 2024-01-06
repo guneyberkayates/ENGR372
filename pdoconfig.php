@@ -3,8 +3,8 @@
 	// veritabanı bağlantısı için gerekli parametreler
 	$host = "localhost";
 	$vt_adi = "engr372";
-	$kullanici_adi = "root";
-	$sifre = "12GBAgba.";
+	$kullanici_adi = "abc";
+	$sifre = "abc";
 
 	try {
 		 $con = new PDO("mysql:host={$host};dbname={$vt_adi}", $kullanici_adi, $sifre,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));

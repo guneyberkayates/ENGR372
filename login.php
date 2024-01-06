@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300&display=swap" rel="stylesheet">
-    <title>ATKTREE - LINK KISALTMA SERVİSİ </title>
+    <title> LinkInBio</title>
 </head>
 <body>
     <!-- GİRİŞ SAYFASI İÇİN OLUŞTURULAN FORM-->
@@ -28,7 +28,7 @@
 				}
 				
 				?>
-                <input type="text" name="uname" placeholder="atktree.com/username" />
+                <input type="text" name="uname" placeholder="linkinbio.com/username" />
                 <input type="password" name="pword" placeholder="Password" />
                 <br>
                 <p>Don't have an account? <a href="signup.php" style="color: blue;">Sign up</a></p>

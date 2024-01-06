@@ -3,8 +3,8 @@
 <?php
 
 $sname= "localhost";
-$unmae= "root";
-$password = "12GBAgba.";
+$unmae= "abc";
+$password = "abc";
 $db_name = "engr372";
 
 
