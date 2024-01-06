@@ -14,11 +14,9 @@
       <img src="Dashboard_user.png" alt="Profile Photo" />
     </div>
     <nav>
-      <a href="index.php">Main Page</a>
       <a href="customize.php">Customize Page</a>
       <a href="data.php">Data Page</a>
       <a href="pricing.php">Pricing Page</a>
-      <a href="info.php">Info Page</a>
        <form method="post" action="data.php">
         <input type="hidden" name="exit_button_clicked" value="1">
         <button type="submit">Exit</button>
