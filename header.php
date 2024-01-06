@@ -19,7 +19,10 @@
       <a href="data.php">Data Page</a>
       <a href="pricing.php">Pricing Page</a>
       <a href="info.php">Info Page</a>
-      <button id="exit-button" onclick="exitButtonClick()">Exit</button>
+       <form method="post" action="data.php">
+        <input type="hidden" name="exit_button_clicked" value="1">
+        <button type="submit">Exit</button>
+      </form>
     </nav>
   </header>
   <main>
