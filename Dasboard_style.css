@@ -1,0 +1,83 @@
+/* Reset styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Header styles */
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 1rem;
+  }
+  
+  nav {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  #exit-button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  /* Main styles */
+  
+  main {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background-image: url(pexels-stephan-seeber-1261728.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .text {
+    text-align: center;
+    flex: 1;
+    height: 530px;
+    background-color: rgba(255, 255, 255, 0.5); /* Add a white background with 50% opacity */
+    background-image: -moz-element(to bottom, #fff 1px, transparent 1px), linear-gradient(to right, #fff 1px, transparent 1px); /* Create a grid pattern */
+    background-size: 10px 10px; /* Set the size of the grid cells */
+  }
+  
+  
+  /* Footer styles */
+  
+  footer {
+   
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+  }

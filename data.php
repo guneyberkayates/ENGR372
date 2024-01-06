@@ -11,6 +11,7 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
 
+
 // Get user information from the session
 $user_id = $_SESSION['id'];
 $user_name = $_SESSION['username'];
@@ -25,9 +26,6 @@ try {
     $firstRecord = $statement->fetch(PDO::FETCH_ASSOC);
 
     if ($firstRecord) {
-
-       
-
         $profilePic = $firstRecord['profile_pic'];
         $Twitter = $firstRecord['Twitter'];
         $Facebook = $firstRecord['Facebook'];
@@ -45,6 +43,105 @@ try {
     die('ERROR: ' . $exception->getMessage());
 }
 
+// Check if a delete request is submitted
+if (isset($_POST['deleteTwitter'])) {
+    try {
+        $query = "UPDATE user_data SET Twitter = NULL WHERE id = :user_id";
+        $statement = $con->prepare($query);
+        $statement->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $statement->execute();
+        echo 'Twitter deleted successfully'; // Debugging statement
+        header('Location: data.php');
+        exit;
+    } catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
+}
+
+// Repeat the above block for other social media platforms
+if (isset($_POST['deleteFacebook'])) {
+    try {
+        $query = "UPDATE user_data SET Facebook = NULL WHERE id = :user_id";
+        $statement = $con->prepare($query);
+        $statement->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $statement->execute();
+        echo 'Facebook deleted successfully'; // Debugging statement
+        header('Location: data.php');
+        exit;
+    } catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
+}
+
+if (isset($_POST['deleteInstagram'])) {
+    try {
+        $query = "UPDATE user_data SET Instagram = NULL WHERE id = :user_id";
+        $statement = $con->prepare($query);
+        $statement->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $statement->execute();
+        echo 'Instagram deleted successfully'; // Debugging statement
+        header('Location: data.php');
+        exit;
+    } catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
+}
+
+if (isset($_POST['deleteLinkedin'])) {
+    try {
+        $query = "UPDATE user_data SET Linkedin = NULL WHERE id = :user_id";
+        $statement = $con->prepare($query);
+        $statement->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $statement->execute();
+        echo 'LinkedIn deleted successfully'; // Debugging statement
+        header('Location: data.php');
+        exit;
+    } catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
+}
+
+if (isset($_POST['deleteGitHub'])) {
+    try {
+        $query = "UPDATE user_data SET GitHub = NULL WHERE id = :user_id";
+        $statement = $con->prepare($query);
+        $statement->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $statement->execute();
+        echo 'GitHub deleted successfully'; // Debugging statement
+        header('Location: data.php');
+        exit;
+    } catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
+}
+
+if (isset($_POST['deleteReddit'])) {
+    try {
+        $query = "UPDATE user_data SET Reddit = NULL WHERE id = :user_id";
+        $statement = $con->prepare($query);
+        $statement->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $statement->execute();
+        echo 'Reddit deleted successfully'; // Debugging statement
+        header('Location: data.php');
+        exit;
+    } catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
+}
+
+if (isset($_POST['removeImage'])) {
+    try {
+        $query = "UPDATE user_data SET profile_pic = NULL WHERE id = :user_id";
+        $statement = $con->prepare($query);
+        $statement->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $statement->execute();
+        echo 'Image removed successfully'; // Debugging statement
+        header('Location: data.php');
+        exit;
+    } catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -113,61 +210,98 @@ try {
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Saved User Data</h1>
+<?php include('header.php'); ?>
 
-    <?php
-   if (!empty($profilePic)) {
-    // Determine the image type dynamically
-    $imageData = base64_decode($profilePic);
-    $imageInfo = getimagesizefromstring($imageData);
+    <div class="container">
+        <h1>Saved User Data</h1>
 
-    if ($imageInfo !== false) {
-        $imageType = $imageInfo['mime'];
-        echo '<img src="data:' . $imageType . ';base64,' . $profilePic . '" alt="User Photo">';
-    } else {
-        echo '<p>Invalid image data</p>';
-    }
-} else {
-    echo '<p>No profile picture available</p>';
-}
+        <?php
+        if (!empty($profilePic)) {
+            // Determine the image type dynamically
+            $imageData = base64_decode($profilePic);
+            $imageInfo = getimagesizefromstring($imageData);
 
-    ?>
+            if ($imageInfo !== false) {
+                $imageType = $imageInfo['mime'];
+                echo '<img src="data:' . $imageType . ';base64,' . $profilePic . '" alt="User Photo">';
+            } else {
+                echo '<p>Invalid image data</p>';
+            }
+        } else {
+            echo '<p>No profile picture available</p>';
+        }
+        ?>
+        <form method="post" >
+            <input type="hidden" name="removeImage" value="true">
+            <button type="submit">Remove Image</button>
+        </form>
+        <div class="data-div Twitter-div" style="display: flex; flex-direction: row;">
+            <img src="./images/svg/file6.svg" alt="Twitter Icon" style="width: 1.25em; height: 1.25em;">
+            <p><strong>Twitter:</strong> <a href="<?php echo $Twitter; ?>" target="_blank" id="Twitter"><?php echo $Twitter; ?></a>
+                <!-- Add delete button -->
+                <form method="post" >
+                    <input type="hidden" name="deleteTwitter" value="true">
+                    <button type="submit">Delete</button>
+                </form>
+            </p>
+        </div>
 
+        <div class="data-div Facebook-div" style="display: flex; flex-direction: row;">
+            <img src="./images/svg/file1.svg" alt="Facebook Icon" style="width: 1.25em; height: 1.25em;">
+            <p><strong>Facebook:</strong> <a href="<?php echo $Facebook; ?>" target="_blank" id="Facebook"><?php echo $Facebook; ?></a>
+                <!-- Add delete button -->
+                <form method="post" >
+                    <input type="hidden" name="deleteFacebook" value="true">
+                    <button type="submit">Delete</button>
+                </form>
+            </p>
+        </div>
 
+        <div class="data-div Instagram-div" style="display: flex; flex-direction: row;">
+            <img src="./images/svg/file3.svg" alt="Instagram Icon" style="width: 1.25em; height: 1.25em;">
+            <p><strong>Instagram:</strong> <a href="<?php echo $Instagram; ?>" target="_blank" id="Instagram"><?php echo $Instagram; ?></a>
+                <!-- Add delete button -->
+                <form method="post" >
+                    <input type="hidden" name="deleteInstagram" value="true">
+                    <button type="submit">Delete</button>
+                </form>
+            </p>
+        </div>
 
-<div class="data-div Twitter-div"  style="display: flex; flex-direction:row;">
-<img src="./images/svg/file6.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
+        <div class="data-div Linkedin-div" style="display: flex; flex-direction: row;">
+            <img src="./images/svg/file4.svg" alt="LinkedIn Icon" style="width: 1.25em; height: 1.25em;">
+            <p><strong>LinkedIn:</strong> <a href="<?php echo $Linkedin; ?>" target="_blank" id="Linkedin"><?php echo $Linkedin; ?></a>
+                <!-- Add delete button -->
+                <form method="post" >
+                    <input type="hidden" name="deleteLinkedin" value="true">
+                    <button type="submit">Delete</button>
+                </form>
+            </p>
+        </div>
 
-    <p><strong>Twitter:</strong> <a href="<?php echo $Twitter; ?>" target="_blank" id="Twitter"><?php echo $Twitter; ?></a></p>
-</div>
-<div class="data-div Facebook-div"  style="display: flex; flex-direction:row;">
-<img src="./images/svg/file1.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
+        <div class="data-div GitHub-div" style="display: flex; flex-direction: row;">
+            <img src="./images/svg/file2.svg" alt="GitHub Icon" style="width: 1.25em; height: 1.25em;">
+            <p><strong>GitHub:</strong> <a href="<?php echo $GitHub; ?>" target="_blank" id="GitHub"><?php echo $GitHub; ?></a>
+                <!-- Add delete button -->
+                <form method="post" >
+                    <input type="hidden" name="deleteGitHub" value="true">
+                    <button type="submit">Delete</button>
+                </form>
+            </p>
+        </div>
 
-    <p><strong>Facebook:</strong> <a href="<?php echo $Facebook; ?>" target="_blank" id="Facebook"><?php echo $Facebook; ?></a></p>
-</div>
-<div class="data-div Instagram-div"  style="display: flex; flex-direction:row;">
-<img src="./images/svg/file3.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
+        <div class="data-div Reddit-div" style="display: flex; flex-direction: row;">
+            <img src="./images/svg/file5.svg" alt="Reddit Icon" style="width: 1.25em; height: 1.25em;">
+            <p><strong>Reddit:</strong> <a href="<?php echo $Reddit; ?>" target="_blank" id="Reddit"><?php echo $Reddit; ?></a>
+                <!-- Add delete button -->
+                <form method="post" >
+                    <input type="hidden" name="deleteReddit" value="true">
+                    <button type="submit">Delete</button>
+                </form>
+            </p>
+        </div>
+    </div>
+    <?php include('footer.php'); ?>
 
-    <p><strong>Instagram:</strong> <a href="<?php echo $Instagram; ?>" target="_blank" id="Instagram"><?php echo $Instagram; ?></a></p>
-</div>
-<div class="data-div Linkedin-div"  style="display: flex; flex-direction:row;">
-<img src="./images/svg/file4.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
-
-    <p><strong>Linkedin:</strong> <a href="<?php echo $Linkedin; ?>" target="_blank" id="Linkedin"><?php echo $Linkedin; ?></a></p>
-</div>
-<div class="data-div GitHub-div"  style="display: flex; flex-direction:row;">
-<img src="./images/svg/file2.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
-
-    <p><strong>GitHub:</strong> <a href="<?php echo $GitHub; ?>" target="_blank" id="GitHub"><?php echo $GitHub; ?></a></p>
-</div>
-<div class="data-div Reddit-div"  style="display: flex; flex-direction:row;">
-<img src="./images/svg/file5.svg" alt="Reddit Icon"  style="width: 1.25em; height: 1.25em;">
-
-    <p><strong>Reddit:</strong> <a href="<?php echo $Reddit; ?>" target="_blank" id="Reddit"><?php echo $Reddit; ?></a></p>
-</div>
-
-
-</div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 // Include the configuration file
-include("pdoconfig.php");
+include 'pdoconfig.php';
 
 // Start the session
 session_start();
@@ -10,6 +10,9 @@ if (!isset($_SESSION['id'])) {
     header('Location: login.php');
     exit;
 }
+
+// Rest of your existing code...
+
 
 // Get user information from the session
 $user_id = $_SESSION['id'];
@@ -29,10 +32,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $GitHub = isset($_POST['GitHub']) ? $_POST['GitHub'] : '';
         $Reddit = isset($_POST['Reddit']) ? $_POST['Reddit'] : '';
 
-        // Add GitHub and Reddit fields to the database query
-        $sorgu2 = "INSERT INTO user_data (id, Twitter, Facebook, Instagram, Linkedin, GitHub, Reddit, profile_pic, selectedColor) 
-        VALUES (:user_id, :Twitter, :Facebook, :Instagram, :Linkedin, :GitHub, :Reddit, :profilePic, :selectedColor)";
-        $stmt2 = $con->prepare($sorgu2);
+        // Check if the record with the given user ID already exists
+        $checkQuery = "SELECT * FROM user_data WHERE id = :user_id";
+        $checkStmt = $con->prepare($checkQuery);
+        $checkStmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $checkStmt->execute();
+        $rowCount = $checkStmt->rowCount();
+
+        if ($rowCount > 0) {
+            // Update the existing record
+            $updateQuery = "UPDATE user_data SET Twitter = :Twitter, Facebook = :Facebook, Instagram = :Instagram, 
+                Linkedin = :Linkedin, GitHub = :GitHub, Reddit = :Reddit, profile_pic = :profilePic, 
+                selectedColor = :selectedColor WHERE id = :user_id";
+            $stmt2 = $con->prepare($updateQuery);
+        } else {
+            // Insert a new record
+            $insertQuery = "INSERT INTO user_data (id, Twitter, Facebook, Instagram, Linkedin, GitHub, Reddit, 
+                profile_pic, selectedColor) VALUES (:user_id, :Twitter, :Facebook, :Instagram, :Linkedin, 
+                :GitHub, :Reddit, :profilePic, :selectedColor)";
+            $stmt2 = $con->prepare($insertQuery);
+        }
 
         $Twitter = $_POST['Twitter'];
         $Facebook = $_POST['Facebook'];
@@ -206,6 +225,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </style>
 </head>
 <body>
+<?php include('header.php'); ?>
+
   <div class="container">
     
     <button id="settingsButton" onclick="toggleColorOptions()">Settings</button>
@@ -302,5 +323,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     }
   </script>
+      <?php include('footer.php'); ?>
+
 </body>
 </html>

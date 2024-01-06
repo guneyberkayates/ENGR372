@@ -40,7 +40,7 @@ if (isset($_POST['uname']) && isset($_POST['pword'])) {
             if ($row['username'] === $uname && $row['password'] === $pass) {
             	$_SESSION['username'] = $row['username'];
             	$_SESSION['id'] = $row['id'];
-				header("Location: customize.php");
+				header("Location: data.php");
  				exit();
      
             }else{

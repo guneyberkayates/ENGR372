@@ -13,6 +13,8 @@
 </head>
 <body>
 
+<?php include('header.php'); ?>
+
     <div class="pricing-table">
         <div class="details">
             <h2> Package To Suit Your Plan</h2>
@@ -69,7 +71,8 @@
 
         </div>
     </div>
-
+    <footer> <p> Copyright &copy 08.01.2024 LinkinBio </p> </footer>
+    <?php include('footer.php'); ?>
 
 </body>
 </html>

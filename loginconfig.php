@@ -4,7 +4,7 @@
 
 $sname= "localhost";
 $unmae= "root";
-$password = "";
+$password = "12GBAgba.";
 $db_name = "engr372";
 
 
