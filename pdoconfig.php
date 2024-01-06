@@ -2,7 +2,7 @@
 <?php
 	// veritabanı bağlantısı için gerekli parametreler
 	$host = "localhost";
-	$vt_adi = "engr372";
+	$vt_adi = "group2";
 	$kullanici_adi = "abc";
 	$sifre = "abc";
 	try {

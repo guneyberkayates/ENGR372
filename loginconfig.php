@@ -5,7 +5,7 @@
 $sname= "localhost";
 $unmae= "abc";
 $password = "abc";
-$db_name = "engr372";
+$db_name = "group2";
 
 
 $conn = mysqli_connect($sname, $unmae, $password, $db_name);
