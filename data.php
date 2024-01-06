@@ -1,3 +1,8 @@
+
+
+<!-- The rest of your data.php file -->
+
+
 <?php
 // Include the configuration file
 include 'pdoconfig.php';
@@ -9,6 +14,12 @@ session_start();
 if (!isset($_SESSION['id'])) {
     header('Location: login.php');
     exit;
+}
+
+if (isset($_POST['exit_button_clicked'])) {
+    session_destroy();
+    header("Location: login.php"); // Redirect to login page after session destruction
+    exit();
 }
 
 
